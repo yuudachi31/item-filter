@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useMemo } from 'react';
 interface Item {
   name: string;
   category: string;
@@ -23,7 +23,9 @@ interface Props {
 }
 //REACT.FC 是 React 的「Function Component」型別 接收的 props 物件型別
 const FilterPanel: React.FC<Props> = ({ filters, setFilters, items }) => {
-  const categories = Array.from(new Set(items.map(item => item.category)));
+  const categories = useMemo(() => {
+  return Array.from(new Set(items.map(item => item.category)));
+}, [items]);
 
   return (
     <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
