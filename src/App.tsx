@@ -18,7 +18,8 @@ interface Filters {
   inStockOnly: boolean;
   sort: 'asc' | 'desc';
 }
-
+//最多顯示100筆資料
+const pageSize = 100;
 export default function App() {
   const [items, setItems] = useState<Item[]>([]);
   const [filters, setFilters] = useState<Filters>({
@@ -29,10 +30,14 @@ export default function App() {
     inStockOnly: false,
     sort: 'asc'
   });
-
+  const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(() => {
     setItems(itemsData);
   }, []);
+  // 每當 filter 改變時，重設回第一頁
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
 
   const filteredItems = useMemo(() => {
     return items
@@ -45,12 +50,34 @@ export default function App() {
       )
       .sort((a, b) => filters.sort === 'asc' ? a.price - b.price : b.price - a.price);
   }, [items, filters]);
-
+  const totalPages = Math.ceil(filteredItems.length / pageSize);
+  const pagedItems = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filteredItems.slice(start, start + pageSize);
+  }, [filteredItems, currentPage]);
   return (
-    <div className="p-4">
+    <div className="container">
       <h1 className="text-2xl font-bold mb-4">商品篩選系統</h1>
       <FilterPanel filters={filters} setFilters={setFilters} items={items} />
-      <ItemList items={filteredItems} />
+      <ItemList items={pagedItems} />
+      <div className="flex justify-between items-center mt-4">
+         <button
+        className="page-button"
+        onClick={() => setCurrentPage(p => p - 1)}
+        disabled={currentPage === 1}
+      >
+        上一頁
+      </button>
+      <span>第 {currentPage} / {totalPages} 頁</span>
+      <button
+        className="page-button"
+        onClick={() => setCurrentPage(p => p + 1)}
+        disabled={currentPage === totalPages}
+      >
+        下一頁
+      </button>
+        </div>
+     
     </div>
   );
 }

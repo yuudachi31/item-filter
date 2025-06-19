@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMemo } from 'react';
+import CategoryButton from './CategoryButton';
 interface Item {
   name: string;
   category: string;
@@ -24,9 +25,21 @@ interface Props {
 //REACT.FC 是 React 的「Function Component」型別 接收的 props 物件型別
 const FilterPanel: React.FC<Props> = ({ filters, setFilters, items }) => {
   const categories = useMemo(() => {
-  return Array.from(new Set(items.map(item => item.category)));
-}, [items]);
+    return Array.from(new Set(items.map(item => item.category)));
+  }, [items]);
 
+
+  const toggleCategory = (category: string) => {
+    setFilters(prev => {
+      const isSelected = prev.categories.includes(category);
+      return {
+        ...prev,
+        categories: isSelected
+          ? prev.categories.filter(c => c !== category)
+          : [...prev.categories, category]
+      };
+    });
+  };
   return (
     <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <input
@@ -36,23 +49,21 @@ const FilterPanel: React.FC<Props> = ({ filters, setFilters, items }) => {
         value={filters.search}
         onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
       />
-      <select
-        multiple
-        className="border p-2 rounded"
-        value={filters.categories}
-        onChange={e =>
-          setFilters(f => ({
-            ...f,
-            categories: Array.from(e.target.selectedOptions).map(o => o.value)
-          }))
-        }
-      >
-        {categories.map(cat => (
-          <option key={cat} value={cat}>
-            {cat}
-          </option>
-        ))}
-      </select>
+      <div className="flex flex-wrap gap-2 category-buttons">
+        <span style={{marginRight:5 }}>選擇分類: </span>
+        {categories.map(cat => {
+          // const selected = filters.categories.includes(cat);
+          return (
+            <CategoryButton
+              key={cat}
+              category={cat}
+              selected={filters.categories.includes(cat)}
+              onClick={toggleCategory}
+            />
+          );
+        })}
+      </div>
+
       <div className="flex gap-2">
         <input
           type="number"
