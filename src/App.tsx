@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import itemsData from './json/items.json';
 import FilterPanel from './components/FilterPanel';
 import ItemList from './components/ItemList';
-
+import { useIsMobile } from './hooks/useIsMobile';
 interface Item {
   name: string;
   category: string;
@@ -19,7 +19,7 @@ interface Filters {
   sort: 'asc' | 'desc';
 }
 //最多顯示100筆資料
-const pageSize = 100;
+
 export default function App() {
   const [items, setItems] = useState<Item[]>([]);
   const [filters, setFilters] = useState<Filters>({
@@ -30,6 +30,8 @@ export default function App() {
     inStockOnly: false,
     sort: 'asc'
   });
+  const isMobile = useIsMobile(); // 假設 breakpoint = 768
+  const pageSize = isMobile ? 20 : 50;
   const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(() => {
     setItems(itemsData);
@@ -38,7 +40,7 @@ export default function App() {
   useEffect(() => {
     setCurrentPage(1);
   }, [filters]);
-
+  // 使用 useMemo 來計算過濾後的商品列表
   const filteredItems = useMemo(() => {
     return items
       .filter(item =>
@@ -50,6 +52,7 @@ export default function App() {
       )
       .sort((a, b) => filters.sort === 'asc' ? a.price - b.price : b.price - a.price);
   }, [items, filters]);
+  // 計算總頁數
   const totalPages = Math.ceil(filteredItems.length / pageSize);
   const pagedItems = useMemo(() => {
     const start = (currentPage - 1) * pageSize;
@@ -57,27 +60,27 @@ export default function App() {
   }, [filteredItems, currentPage]);
   return (
     <div className="container">
-      <h1 className="text-2xl font-bold mb-4">商品篩選系統</h1>
+      <h2 >商品篩選系統</h2>
       <FilterPanel filters={filters} setFilters={setFilters} items={items} />
-      <ItemList items={pagedItems} />
-      <div className="flex justify-between items-center mt-4">
-         <button
-        className="page-button"
-        onClick={() => setCurrentPage(p => p - 1)}
-        disabled={currentPage === 1}
-      >
-        上一頁
-      </button>
-      <span>第 {currentPage} / {totalPages} 頁</span>
-      <button
-        className="page-button"
-        onClick={() => setCurrentPage(p => p + 1)}
-        disabled={currentPage === totalPages}
-      >
-        下一頁
-      </button>
-        </div>
-     
+      <ItemList items={pagedItems} isMobile={isMobile}/>
+      <div className='page-buttons'>
+        <button
+          className="page-button"
+          onClick={() => setCurrentPage(p => p - 1)}
+          disabled={currentPage === 1}
+        >
+          上一頁
+        </button>
+        <span>第 {currentPage} / {totalPages} 頁</span>
+        <button
+          className="page-button"
+          onClick={() => setCurrentPage(p => p + 1)}
+          disabled={currentPage === totalPages}
+        >
+          下一頁
+        </button>
+      </div>
+
     </div>
   );
 }

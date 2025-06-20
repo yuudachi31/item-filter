@@ -27,9 +27,9 @@ body {
   margin: 0;
   display: block;
   place-items: center;
-  min-width: 320px;
+  /* min-width: 320px; */
   min-height: 100vh;
-  width: 100%;
+  /* width: 100%; */
 }
 
 h1 {
@@ -72,18 +72,31 @@ button:focus-visible {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   background-color: rgb(223, 248, 252);
   padding: 2em;
 }
-d
+/* .page-buttons button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+
+} */
 .page-button {
   padding: 0.6em 1.2em;
   font-size: 0.8em;
   font-weight: 500;
-  margin: 20px 10px;
-  background-color: #646cff;
+  margin: 10px 10px;
+  border: #FF8800 1px solid;
+  border-radius: 10px;
+  background-color: #f4f5ff;
 }
 .category-buttons button{
   /* margin-left: 5px; */
@@ -104,12 +117,62 @@ border-right:2px dashed  #FF8800;
 /* background-color: transparent; */
 }
 .category-buttons .selected{
-  
     background-color: rgb(245, 253, 255);
-  
 }
-@media (max-width: 600px) {
+/* .itemlist-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+} */
+ .itemlist-table td{
+padding: 2px 10px;
+background-color: #b7e4ff;
+}
+.itemlist-table td:nth-child(even){
+padding: 2px 10px;
+background-color: #ffffff;
+}
+ .itemlist-table th{
+padding: 2px 10px;
+background-color: #dcf1ff;
+}
+.itemlist-table th:nth-child(even){
+padding: 2px 10px;
+background-color: #dcf1ff;
+}
+.price-filter{
+  /* display: flex; */
+  justify-content: space-between;
+}
+.price-filter input{
+/* width: 100px; */
+margin: 0 5px;
+}
+.itemcard-container{
+  /* width: 100%; */
+  /* background-color: #fff; */
+}
+.itemcard{
+  min-width: 200px;
+  padding: 1.3em  1.3em;
+  margin: 20px 0;
+  background-color: #fff;
+  border-radius: 15%;
+  box-shadow: 2px 7px 10px rgb(216, 216, 216);
+}
+.in-stock{
+  color: rgb(67, 211, 10);
+  font-weight: bold;
+}
+.off-stock{
+  color: rgb(233, 22, 22);
+}
+
+/* mobile */
+/* @media (max-width: 768px) {
   .itemlist-table{
     display: none;
   }
-}
+} */

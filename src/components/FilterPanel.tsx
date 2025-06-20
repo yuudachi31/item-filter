@@ -64,13 +64,13 @@ const FilterPanel: React.FC<Props> = ({ filters, setFilters, items }) => {
         })}
       </div>
 
-      <div className="flex gap-2">
+      <div className="price-filter">
         <input
           type="number"
           placeholder="最小價格"
           value={filters.priceMin}
           onChange={e => setFilters(f => ({ ...f, priceMin: e.target.value }))}
-          className="border p-2 rounded w-full"
+          className=""
         />
         <input
           type="number"
@@ -80,7 +80,7 @@ const FilterPanel: React.FC<Props> = ({ filters, setFilters, items }) => {
           className="border p-2 rounded w-full"
         />
       </div>
-      <label className="flex items-center gap-2">
+      <label className="flex items-center gap-2"style={{ marginRight:10 }}>
         <input
           type="checkbox"
           checked={filters.inStockOnly}
