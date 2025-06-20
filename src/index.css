@@ -153,13 +153,21 @@ margin: 0 5px;
 .itemcard-container{
   /* width: 100%; */
   /* background-color: #fff; */
+  display: grid;
+  grid-template-columns: 1fr 1fr ;
+    grid-column-gap: 10px;
+}
+@media (max-width: 425px) {
+  .itemcard-container{
+ grid-template-columns: 1fr;
+}
 }
 .itemcard{
-  min-width: 200px;
+  /* min-width: 200px; */
   padding: 1.3em  1.3em;
   margin: 20px 0;
   background-color: #fff;
-  border-radius: 15%;
+  border-radius: 25px;
   box-shadow: 2px 7px 10px rgb(216, 216, 216);
 }
 .in-stock{
