@@ -15,7 +15,7 @@ interface Props {
 
 const ItemList: React.FC<Props> = ({ isMobile,items }) => {
   if (items.length === 0) {
-    return <p className="text-gray-500">沒有符合條件的商品</p>;
+    return <p>沒有符合條件的商品</p>;
   }
  if (isMobile) {
     // 卡片顯示
@@ -36,24 +36,24 @@ const ItemList: React.FC<Props> = ({ isMobile,items }) => {
     );
   }
   return (
-    <div className="overflow-x-auto itemlist-container">
+    <div className="itemlist-container">
       <table className="itemlist-table">
-        <thead className="bg-gray-100">
-          <tr className='text-gray-700'>
+        <thead >
+          <tr>
             <th >商品名稱</th>
             <th >類別</th>
-            <th className="border px-4 py-2 text-right">價格</th>
-            <th className="border px-4 py-2 text-center">有庫存</th>
+            <th >價格</th>
+            <th >有庫存</th>
           </tr>
         </thead>
         <tbody>
           {items.map(item => (
-            <tr key={item.name} className="hover:bg-gray-50">
+            <tr key={item.name} >
               <td >{item.name}</td>
               <td >{item.category}</td>
               <td >${item.price.toFixed(2)}</td>
               <td >
-                <span className={item.inStock ? 'text-green-600' : 'text-red-600'}>
+                <span className={item.inStock ? 'in-stock' : 'off-stock'}>
                   {item.inStock ? '是' : '否'}
                 </span>
               </td>

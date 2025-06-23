@@ -42,15 +42,15 @@ const FilterPanel: React.FC<Props> = ({ filters, setFilters, items }) => {
     });
   };
   return (
-    <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div>
       <input
         type="text"
-        className="border p-2 rounded"
+
         placeholder="搜尋名稱"
         value={filters.search}
         onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
       />
-      <div className="flex flex-wrap gap-2 category-buttons">
+      <div className="category-buttons">
         <span style={{ marginRight: 5 }}>選擇分類: </span>
         {categories.map(cat => {
           // const selected = filters.categories.includes(cat);
@@ -71,17 +71,16 @@ const FilterPanel: React.FC<Props> = ({ filters, setFilters, items }) => {
           placeholder="最小價格"
           value={filters.priceMin}
           onChange={e => setFilters(f => ({ ...f, priceMin: e.target.value }))}
-          className=""
         />
         <input
           type="number"
           placeholder="最大價格"
           value={filters.priceMax}
           onChange={e => setFilters(f => ({ ...f, priceMax: e.target.value }))}
-          className="border p-2 rounded w-full"
+      
         />
       </div>
-      <label className="flex items-center gap-2" style={{ marginRight: 10 }}>
+      <label  style={{ marginRight: 10 }}>
         <input
           type="checkbox"
           checked={filters.inStockOnly}
@@ -89,20 +88,19 @@ const FilterPanel: React.FC<Props> = ({ filters, setFilters, items }) => {
         />
         只顯示有庫存
       </label>
-      <label className="block mb-2">
+      <label >
         排序依據：
         <select
           value={filters.sortBy}
           onChange={e => setFilters(f => ({ ...f, sortBy: e.target.value as 'price' | 'name' }))}
-          className="ml-2 border rounded px-2 py-1"
+         
         >
           <option value="price">價格</option>
           <option value="name">名稱</option>
         </select>
       </label>
-      <label className="block mb-2">
+      <label >
         <select
-        className="border p-2 rounded"
         value={filters.sort}
         onChange={e => setFilters(f => ({ ...f, sort: e.target.value as 'asc' | 'desc' }))}
       // disabled={filters.sortBy=='name'} 

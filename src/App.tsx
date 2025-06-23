@@ -17,7 +17,7 @@ interface Filters {
   priceMax: string;
   inStockOnly: boolean;
   sort: 'asc' | 'desc';
-   sortBy: 'price' | 'name'; 
+  sortBy: 'price' | 'name';
 }
 //最多顯示100筆資料
 
@@ -30,7 +30,7 @@ export default function App() {
     priceMax: '',
     inStockOnly: false,
     sort: 'asc',
-     sortBy: 'price'  
+    sortBy: 'price'
   });
   const isMobile = useIsMobile(); // 假設 breakpoint = 768
   const pageSize = isMobile ? 20 : 50;
@@ -43,26 +43,26 @@ export default function App() {
     setCurrentPage(1);
   }, [filters]);
   // 使用 useMemo 來計算過濾後的商品列表
- const filteredItems = useMemo(() => {
-  const filtered = items.filter(item =>
-    (filters.categories.length === 0 || filters.categories.includes(item.category)) &&
-    item.name.toLowerCase().includes(filters.search.toLowerCase()) &&
-    (!filters.priceMin || item.price >= Number(filters.priceMin)) &&
-    (!filters.priceMax || item.price <= Number(filters.priceMax)) &&
-    (!filters.inStockOnly || item.inStock)
-  );
+  const filteredItems = useMemo(() => {
+    const filtered = items.filter(item =>
+      (filters.categories.length === 0 || filters.categories.includes(item.category)) &&
+      item.name.toLowerCase().includes(filters.search.toLowerCase()) &&
+      (!filters.priceMin || item.price >= Number(filters.priceMin)) &&
+      (!filters.priceMax || item.price <= Number(filters.priceMax)) &&
+      (!filters.inStockOnly || item.inStock)
+    );
 
-  const sorted = [...filtered].sort((a, b) => {
-    const direction = filters.sort === 'asc' ? 1 : -1;
-    if (filters.sortBy === 'price') {
-      return (a.price - b.price) * direction;
-    } else {
-      return a.name.localeCompare(b.name) * direction;
-    }
-  });
+    const sorted = [...filtered].sort((a, b) => {
+      const direction = filters.sort === 'asc' ? 1 : -1;
+      if (filters.sortBy === 'price') {
+        return (a.price - b.price) * direction;
+      } else {
+        return a.name.localeCompare(b.name) * direction;
+      }
+    });
 
-  return sorted;
-}, [items, filters]);
+    return sorted;
+  }, [items, filters]);
   // 計算總頁數
   const totalPages = Math.ceil(filteredItems.length / pageSize);
   const pagedItems = useMemo(() => {
@@ -71,9 +71,9 @@ export default function App() {
   }, [filteredItems, currentPage]);
   return (
     <div className="container">
-      <h2 >商品篩選系統</h2>
+      <h2 >庫存查詢系統</h2>
       <FilterPanel filters={filters} setFilters={setFilters} items={items} />
-      <ItemList items={pagedItems} isMobile={isMobile}/>
+      <ItemList items={pagedItems} isMobile={isMobile} />
       <div className='page-buttons'>
         <button
           className="page-button"
