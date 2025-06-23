@@ -15,6 +15,7 @@ interface Filters {
   priceMax: string;
   inStockOnly: boolean;
   sort: 'asc' | 'desc';
+  sortBy: 'price' | 'name';
 }
 
 interface Props {
@@ -50,7 +51,7 @@ const FilterPanel: React.FC<Props> = ({ filters, setFilters, items }) => {
         onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
       />
       <div className="flex flex-wrap gap-2 category-buttons">
-        <span style={{marginRight:5 }}>選擇分類: </span>
+        <span style={{ marginRight: 5 }}>選擇分類: </span>
         {categories.map(cat => {
           // const selected = filters.categories.includes(cat);
           return (
@@ -80,7 +81,7 @@ const FilterPanel: React.FC<Props> = ({ filters, setFilters, items }) => {
           className="border p-2 rounded w-full"
         />
       </div>
-      <label className="flex items-center gap-2"style={{ marginRight:10 }}>
+      <label className="flex items-center gap-2" style={{ marginRight: 10 }}>
         <input
           type="checkbox"
           checked={filters.inStockOnly}
@@ -88,14 +89,28 @@ const FilterPanel: React.FC<Props> = ({ filters, setFilters, items }) => {
         />
         只顯示有庫存
       </label>
-      <select
+      <label className="block mb-2">
+        排序依據：
+        <select
+          value={filters.sortBy}
+          onChange={e => setFilters(f => ({ ...f, sortBy: e.target.value as 'price' | 'name' }))}
+          className="ml-2 border rounded px-2 py-1"
+        >
+          <option value="price">價格</option>
+          <option value="name">名稱</option>
+        </select>
+      </label>
+      <label className="block mb-2">
+        <select
         className="border p-2 rounded"
         value={filters.sort}
         onChange={e => setFilters(f => ({ ...f, sort: e.target.value as 'asc' | 'desc' }))}
+      // disabled={filters.sortBy=='name'} 
       >
-        <option value="asc">價格由低到高</option>
-        <option value="desc">價格由高到低</option>
-      </select>
+        <option value="asc">低到高</option>
+        <option value="desc">高到低</option>
+      </select></label>
+
     </div>
   );
 };

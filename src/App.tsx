@@ -17,6 +17,7 @@ interface Filters {
   priceMax: string;
   inStockOnly: boolean;
   sort: 'asc' | 'desc';
+   sortBy: 'price' | 'name'; 
 }
 //最多顯示100筆資料
 
@@ -28,7 +29,8 @@ export default function App() {
     priceMin: '',
     priceMax: '',
     inStockOnly: false,
-    sort: 'asc'
+    sort: 'asc',
+     sortBy: 'price'  
   });
   const isMobile = useIsMobile(); // 假設 breakpoint = 768
   const pageSize = isMobile ? 20 : 50;
@@ -41,17 +43,26 @@ export default function App() {
     setCurrentPage(1);
   }, [filters]);
   // 使用 useMemo 來計算過濾後的商品列表
-  const filteredItems = useMemo(() => {
-    return items
-      .filter(item =>
-        (filters.categories.length === 0 || filters.categories.includes(item.category)) &&
-        item.name.toLowerCase().includes(filters.search.toLowerCase()) &&
-        (!filters.priceMin || item.price >= Number(filters.priceMin)) &&
-        (!filters.priceMax || item.price <= Number(filters.priceMax)) &&
-        (!filters.inStockOnly || item.inStock)
-      )
-      .sort((a, b) => filters.sort === 'asc' ? a.price - b.price : b.price - a.price);
-  }, [items, filters]);
+ const filteredItems = useMemo(() => {
+  const filtered = items.filter(item =>
+    (filters.categories.length === 0 || filters.categories.includes(item.category)) &&
+    item.name.toLowerCase().includes(filters.search.toLowerCase()) &&
+    (!filters.priceMin || item.price >= Number(filters.priceMin)) &&
+    (!filters.priceMax || item.price <= Number(filters.priceMax)) &&
+    (!filters.inStockOnly || item.inStock)
+  );
+
+  const sorted = [...filtered].sort((a, b) => {
+    const direction = filters.sort === 'asc' ? 1 : -1;
+    if (filters.sortBy === 'price') {
+      return (a.price - b.price) * direction;
+    } else {
+      return a.name.localeCompare(b.name) * direction;
+    }
+  });
+
+  return sorted;
+}, [items, filters]);
   // 計算總頁數
   const totalPages = Math.ceil(filteredItems.length / pageSize);
   const pagedItems = useMemo(() => {
